@@ -1,116 +1,53 @@
-import React, { useState } from 'react';
-// 1. IMPORTUJEME MOZEK KOŠÍKU (Obalí celou aplikaci)
-import { CartProvider } from './CartContext'; // Zkontroluj cestu k souboru
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
+import Home from './Home';
+import Contact from './Contact';
 
-// 2. IMPORTUJEME TVOJE HLAVNÍ STRÁNKY A KOMPONENTY
-import Navbar from './Navbar'; // Tvoje horní lišta (uprav název/cestu pokud je jiná)
-import Bazar from './Bazar';   // Tvůj katalog produktů ze Supabase
-import Admin from './Admin';   // Administrační panel
+// TADY JE JEDINÁ ZMĚNA Č. 1 - Importujeme košík
+import { CartProvider } from './CartContext';
 
-// --- PŮVODNÍ KOMPONENTY ÚVODNÍ STRANY (Které jsem ti smazal) ---
-// Pokud je máš ve zvláštních souborech, importuj je nahoře. 
-// Pokud jsi je měl přímo v App.tsx, tady jsou zpátky:
-
-const HeroSection: React.FC = () => (
-  <section className="pt-32 pb-24 px-6 text-center bg-zinc-900 border-b border-white/5 animate-in fade-in duration-700">
-    <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight mb-6">
-      Vítejte v <span className="text-orange-500 italic">JOPC</span>
-    </h1>
-    <p className="text-zinc-400 max-w-2xl mx-auto text-lg mb-10">
-      Váš spolehlivý partner pro špičkový IT hardware a servis. Od výkonných herních mašin po prověřený bazar.
-    </p>
-    <button 
-      onClick={() => {
-        // Jednoduchý scroll na sekci bazaru
-        const bazarSekce = document.getElementById('bazar-sekce');
-        bazarSekce?.scrollIntoView({ behavior: 'smooth' });
-      }}
-      className="bg-orange-600 hover:bg-orange-500 text-white px-10 py-4 rounded-xl font-black transition-all uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(234,88,12,0.3)]"
-    >
-      Prozkoumat Bazar
-    </button>
-  </section>
-);
-
-const Contacts: React.FC = () => (
-  <section className="py-24 px-6 bg-zinc-900 border-t border-white/5">
-    <div className="max-w-4xl mx-auto text-center">
-      <h2 className="text-4xl font-black uppercase mb-12">Kontakty</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-black/30 p-8 rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all">
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs mb-1">Kde nás najdete?</p>
-          <p className="text-xl font-bold text-white">Náměstí Míru 1, Šumperk</p>
-        </div>
-        <div className="bg-black/30 p-8 rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all">
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs mb-1">Napište nám</p>
-          <p className="text-xl font-bold text-white">info@jopc.cz</p>
-        </div>
-        <div className="bg-black/30 p-8 rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all">
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs mb-1">Zavolejte nám</p>
-          <p className="text-xl font-bold text-white">+420 123 456 789</p>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-// --- HLAVNÍ KOMPONENTA APP ---
-const App: React.FC = () => {
-  // Stav pro přepínání mezi Hlavní stranou a Admin panelem
-  const [currentPage, setCurrentPage] = useState<'main' | 'admin'>('main');
-
+export default function App() {
   return (
-    // 3. DŮLEŽITÉ: CartProvider obaluje ÚPLNĚ VŠECHNO.
+    // TADY JE JEDINÁ ZMĚNA Č. 2 - Obalili jsme Router do CartProvideru
     <CartProvider>
-      <div className="min-h-screen bg-zinc-950 text-white font-sans">
-        
-        {/* Navbar - tvoje horní lišta */}
-        <Navbar />
-
-        {/* --- NAVIGACE PRO PŘEPÍNÁNÍ STRÁNEK --- 
-            (Pro ukázku, jak se dostat do Admin panelu, dokud nemáš React Router) */}
-        <div className="fixed top-0 right-1/2 translate-x-1/2 z-[1001] flex gap-4 mt-4 bg-zinc-900 p-2 rounded-xl border border-white/10 shadow-lg">
-            <button 
-              onClick={() => setCurrentPage('main')}
-              className={`px-4 py-2 rounded-lg font-bold uppercase text-xs tracking-wider transition-all ${currentPage === 'main' ? 'bg-orange-600 text-white' : 'text-zinc-400 hover:text-white'}`}
-            >
-              Hlavní Strana
-            </button>
-            <button 
-              onClick={() => setCurrentPage('admin')}
-              className={`px-4 py-2 rounded-lg font-bold uppercase text-xs tracking-wider transition-all ${currentPage === 'admin' ? 'bg-orange-600 text-white' : 'text-zinc-400 hover:text-white'}`}
-            >
-              Administrace
-            </button>
-        </div>
-
-        {/* --- PODMÍNĚNÉ VYKRESLENÍ OBSAHU --- */}
-        {currentPage === 'main' ? (
-          // HLAVNÍ STRANA (Vrátili jsme tam všechno!)
-          <>
-            <HeroSection />
-            
-            {/* Tady je tvůj katalog produktů ze Supabase */}
-            <div id="bazar-sekce">
-              <Bazar />
-            </div>
-
-            <Contacts />
+      <Router>
+        <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-orange-500">
           
-          </>
-        ) : (
-          // ADMIN STRANA
-          <Admin />
-        )}
+          {/* NAVIGACE */}
+          <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5 px-6 py-4">
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
+              
+              {/* LOGO - Odkazuje na úvod */}
+              <Link to="/" className="text-2xl font-black tracking-tighter hover:scale-105 transition-transform cursor-pointer">
+                <span className="text-white italic">JO</span><span className="text-orange-500">PC</span>
+              </Link>
+              
+              <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                <Link to="/" className="hover:text-orange-500 transition-all">Úvod</Link>
+                <a href="#" className="hover:text-orange-500 transition-all">Služby</a>
+                <a href="#" className="hover:text-orange-500 transition-all">Bazar</a>
+                <Link to="/kontakt" className="hover:text-orange-500 transition-all">Kontakt</Link>
+              </div>
 
-        {/* --- PATIČKA (Footer) --- */}
-        <footer className="py-8 px-6 text-center border-t border-white/5 bg-zinc-950 text-zinc-600 text-sm">
-          &copy; {new Date().getFullYear()} JOPC Šumperk. Všechna práva vyhrazena.
-        </footer>
+              <button className="bg-orange-600 hover:bg-orange-500 px-5 py-2 rounded-full flex items-center gap-2 font-bold transition-all transform hover:scale-105">
+                <ShoppingCart size={18} /> E-SHOP
+              </button>
+            </div>
+          </nav>
 
-      </div>
+          {/* PŘEPÍNAČ STRÁNEK */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/kontakt" element={<Contact />} />
+          </Routes>
+
+          {/* FOOTER */}
+          <footer className="mt-20 border-t border-white/5 py-10 text-center text-zinc-600 text-sm">
+            <p>&copy; 2026 JOPC. Všechna práva vyhrazena.</p>
+          </footer>
+        </div>
+      </Router>
     </CartProvider>
   );
-};
-
-export default App;
+}
