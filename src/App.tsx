@@ -8,6 +8,9 @@ import Contact from './Contact';
 import Bazar from './Bazar';
 import Services from './Services';
 
+// NOVÉ: Import Admin panelu
+import Admin from './Admin';
+
 // Mozek košíku
 import { CartProvider } from './CartContext';
 
@@ -36,7 +39,7 @@ export default function App() {
 
               {/* TLAČÍTKO E-SHOP -> Otevírá PDF katalog v novém okně */}
               <a 
-                href="/COMFOR_noviny_03_2026+cz_final_compressed.pdf" 
+                href="./COMFOR_noviny_03_2026+cz_final_compressed.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-orange-600 hover:bg-orange-500 px-5 py-2 rounded-full flex items-center gap-2 font-bold transition-all transform hover:scale-105"
@@ -53,12 +56,19 @@ export default function App() {
               <Route path="/kontakt" element={<Contact />} />
               <Route path="/sluzby" element={<Services />} />
               <Route path="/bazar" element={<Bazar />} />
+              
+              {/* NOVÉ: Cesta do administrace */}
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
 
           {/* FOOTER */}
-          <footer className="border-t border-white/5 py-10 text-center text-zinc-600 text-sm mt-auto">
+          <footer className="border-t border-white/5 py-10 text-center text-zinc-600 text-sm mt-auto flex flex-col items-center gap-2">
             <p>&copy; 2026 JOPC. Všechna práva vyhrazena.</p>
+            {/* Tajný odkaz pro tebe do administrace */}
+            <Link to="/admin" className="text-zinc-800 hover:text-orange-500 transition-colors text-xs font-bold uppercase tracking-widest">
+              Administrace
+            </Link>
           </footer>
         </div>
       </Router>
