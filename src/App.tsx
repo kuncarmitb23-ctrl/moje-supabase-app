@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 
-// Tvoje stránky (viděl jsem je na tvém screenshotu složky)
+// Tvoje stránky
 import Home from './Home';
 import Contact from './Contact';
 import Bazar from './Bazar';
@@ -34,10 +34,15 @@ export default function App() {
                 <Link to="/kontakt" className="hover:text-orange-500 transition-all">Kontakt</Link>
               </div>
 
-              {/* TLAČÍTKO E-SHOP -> Směřuje do tvého katalogu/bazaru */}
-              <Link to="/bazar" className="bg-orange-600 hover:bg-orange-500 px-5 py-2 rounded-full flex items-center gap-2 font-bold transition-all transform hover:scale-105">
+              {/* TLAČÍTKO E-SHOP -> Otevírá PDF katalog v novém okně */}
+              <a 
+                href="/COMFOR_noviny_03_2026+cz_final_compressed.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-orange-600 hover:bg-orange-500 px-5 py-2 rounded-full flex items-center gap-2 font-bold transition-all transform hover:scale-105"
+              >
                 <ShoppingCart size={18} /> E-SHOP
-              </Link>
+              </a>
             </div>
           </nav>
 
